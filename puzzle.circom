@@ -94,46 +94,27 @@ template Sudoku(n) {
         }
     }
 
-    // // ensure uniqueness in 3 x 3 grid
-    // component distinct_grid[n];
-    // var k = 0;
-    // var m = 0;
-    // for(var m = 0; m < 3; m++) {
-    //     distinct_grid[m] = Distinct(n);
-    //     for(var i = 0; i < 3; i++) {
-    //         for(var j = 0; j < 3; j++) {
-    //             var l = 3*m + i;
-    //             distinct_grid[m].in[k] <== solution[l][j];
-    //             k += 1;
-    //         }
-    //     }
-    //     k = 0;
-    // }
-    // k = 0;
-    // for(var m = 0; m < 3; m++) {
-    //     for(var i = 0; i < 3; i++) {
-    //         for(var j = 0; j < 3; j++) {
-    //             var a = m+3;
-    //             var b = 3*m + i;
-    //             var c = j+3;
-    //             distinct_grid[a] = Distinct(n);
-    //             distinct_grid[a].in[k] <== solution[b][c];                
-    //             k += 1;
-    //         }
-    //     }
-    //     k = 0;
-    // }
-    // for(var m = 0; m < 3; m++) {
-    //     for(var i = 0; i < 3; i++) {
-    //         for(var j = 0; j < 3; j++) {
-    //             distinct_grid[m+6] = Distinct(n);
-    //             distinct_grid[m+6].in[k] <== solution[3*m +i][j+6];
-    //             k += 1;
-    //         }
-    //     }
-    //     k = 0;
-    // }
+    // ensure uniqueness in 3 x 3 grid
     
+    component distinct_grid[n];
+    var k = 0;
+
+    for(var m = 0; m < 3; m++) {
+        distinct_grid[m] = Distinct(n);
+        distinct_grid[m+3] = Distinct(n);
+        distinct_grid[m+6] = Distinct(n);
+
+        for(var i = 0; i < 3; i++) {
+            for(var j = 0; j < 3; j++) {
+                distinct_grid[m].in[k] <== solution[3*m + i][j];
+                distinct_grid[m+3].in[k] <== solution[3*m + i][j+3];                
+                distinct_grid[m+6].in[k] <== solution[3*m +i][j+6];
+
+                k += 1;
+            }
+        }
+        k = 0;
+    }
 }
 
 component main {public[puzzle]} = Sudoku(9);
